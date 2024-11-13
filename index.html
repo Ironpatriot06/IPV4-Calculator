@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub</title><style>body{
+  background-color:beige;
+}
+#hg{
+  border-radius:20px 20px;
+  background-color:black;
+  color:white;
+}
+#ipAddress, #subnetMask{
+  border:2px solid orange;
+  margin:2px;
+}
+</style>
+</head>
+  <body>
+    
+  <div>
+  <h3>Subnet Calculator</h3>
+  <label>Enter IP Address (e.g., 192.168.1.1): </label>
+  <input type="text" id="ipAddress" placeholder="e.g., 192.168.1.1"><br>
+  <label>Enter Subnet Mask (e.g., 255.255.255.0): </label>
+  <input type="text" id="subnetMask" placeholder="e.g., 255.255.255.0"><br>
+  <button id="hg"onclick="calculateSubnet()">Calculate</button>
+  
+  <h4>Results:</h4>
+  <p id="networkAddress"></p>
+  <p id="broadcastAddress"></p>
+  <p id="numberOfHosts"></p>
+</div>
+<script>function ipToBinary(ip) {
+    return ip.split('.').map(num => parseInt(num).toString(2).padStart(8, '0')).join('');
+}
+
+function calculateSubnet() {
+    let ip = document.getElementById('ipAddress').value;
+    let mask = document.getElementById('subnetMask').value;
+
+    let ipBinary = ipToBinary(ip);
+    let maskBinary = ipToBinary(mask);
+
+    // Calculate Network Address
+    let networkBinary = ipBinary.split('').map((bit, i) => bit & maskBinary[i]).join('');
+    let networkAddress = parseInt(networkBinary.substring(0, 8), 2) + '.' +
+                         parseInt(networkBinary.substring(8, 16), 2) + '.' +
+                         parseInt(networkBinary.substring(16, 24), 2) + '.' +
+                         parseInt(networkBinary.substring(24, 32), 2);
+
+    // Calculate Broadcast Address
+    let broadcastBinary = networkBinary.substring(0, maskBinary.indexOf('0')).padEnd(32, '1');
+    let broadcastAddress = parseInt(broadcastBinary.substring(0, 8), 2) + '.' +
+                           parseInt(broadcastBinary.substring(8, 16), 2) + '.' +
+                           parseInt(broadcastBinary.substring(16, 24), 2) + '.' +
+                           parseInt(broadcastBinary.substring(24, 32), 2);
+
+    // Number of Hosts
+    let hostBits = maskBinary.split('0').length - 1;
+    let numberOfHosts = Math.pow(2, hostBits) - 2;
+
+    // Display results
+    document.getElementById('networkAddress').innerText = "Network Address: " + networkAddress;
+    document.getElementById('broadcastAddress').innerText = "Broadcast Address: " + broadcastAddress;
+    document.getElementById('numberOfHosts').innerText = "Number of Hosts: " + numberOfHosts;
+}
+</script>
+  </body>
+</html>
