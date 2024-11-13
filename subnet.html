@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPV4-Subnet-Calculator</title>
+
+<style>
+     @import url('https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap');
+    body {
+      background-color: beige;
+      font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+  
+    #hg {
+      border-radius: 20px 20px;
+      background-color: black;
+      color: white;
+      height: 40px;
+      width: 100px;
+      position: relative;
+    }
+  #hg:hover{
+    background-color: rgb(41, 40, 40);
+    height: 50px;
+    width: 110px;
+    border-radius:30px 30px;
+  }
+    #ipAddress,
+    #subnetMask {
+      border: 2px solid orange;
+      margin: 15px;
+    }
+    h1{
+        font-size: 40px;
+    }
+    .inp{
+        font-size: 25px;
+    }
+    #networkAddress,#numberOfHosts,#networkCalculation,#hostsCalculation{
+        margin:5px;
+        font-size: 25px;
+    }
+    #broadcastAddress,#broadcastCalculation{
+        margin-left:5px;
+        font-size: 25px;
+    }
+  </style>
+  </head>
+  <body>
+  <div>
+    <h1>Subnet Calculator</h1>
+    <label class="inp">Enter IP Address (e.g., 192.168.1.1): </label>
+    <input type="text" id="ipAddress" placeholder="e.g., 192.168.1.1"><br>
+    <label class="inp">Enter Subnet Mask (e.g., 255.255.255.0): </label>
+    <input type="text" id="subnetMask" placeholder="e.g., 255.255.255.0"><br>
+    <button id="hg" onclick="calculateSubnet()">Calculate</button>
+  
+    <h2>Results:</h2>
+    <p id="networkAddress"></p>
+    <p id="broadcastAddress"></p>
+    <p id="numberOfHosts"></p>
+  
+    <h2>Calculations:</h2>
+    <p id="networkCalculation"></p>
+    <p id="broadcastCalculation"></p>
+    <p id="hostsCalculation"></p>
+  </div>
+  
+  <script>
+
+    function ipToBinary(ip) {
+      return ip.split('.').map(num => parseInt(num).toString(2).padStart(8, '0')).join('');
+    }
+    function calculateSubnet() {
+      let ip = document.getElementById('ipAddress').value;
+      let mask = document.getElementById('subnetMask').value;
+  
+      let ipBinary = ipToBinary(ip);
+      let maskBinary = ipToBinary(mask);
+      let networkBinary = ipBinary.split('').map((bit, i) => bit & maskBinary[i]).join('');
+      let networkAddress = parseInt(networkBinary.substring(0, 8), 2) + '.' +
+                           parseInt(networkBinary.substring(8, 16), 2) + '.' +
+                           parseInt(networkBinary.substring(16, 24), 2) + '.' +
+                           parseInt(networkBinary.substring(24, 32), 2);
+      let networkCalculation = `Step 1: Network Address Calculation (IP & Mask)\n` +
+                               `IP Binary: ${ipBinary}\n` +
+                               `Mask Binary: ${maskBinary}\n` +
+                               `Network Binary: ${networkBinary}\n` +
+                               `Network Address: ${networkAddress}`;
+      let broadcastBinary = networkBinary.substring(0, maskBinary.indexOf('0')).padEnd(32, '1');
+      let broadcastAddress = parseInt(broadcastBinary.substring(0, 8), 2) + '.' +
+                             parseInt(broadcastBinary.substring(8, 16), 2) + '.' +
+                             parseInt(broadcastBinary.substring(16, 24), 2) + '.' +
+                             parseInt(broadcastBinary.substring(24, 32), 2);
+      let broadcastCalculation = `Step 2: Broadcast Address Calculation (Network + Host Bits)\n` +
+                                 `Network Binary: ${networkBinary}\n` +
+                                 `Mask Binary: ${maskBinary}\n` +
+                                 `Broadcast Binary: ${broadcastBinary}\n` +
+                                 `Broadcast Address: ${broadcastAddress}`;
+      let hostBits = maskBinary.split('0').length - 1;
+      let numberOfHosts = Math.pow(2, hostBits) - 2;
+      let hostsCalculation = `Step 3: Number of Hosts Calculation (2^Host Bits - 2)\n` +
+                             `Mask Binary: ${maskBinary}\n` +
+                             `Host Bits: ${hostBits}\n` +
+                             `Number of Hosts: ${numberOfHosts}`;
+      document.getElementById('networkAddress').innerText = "Network Address: " + networkAddress;
+      document.getElementById('broadcastAddress').innerText = "Broadcast Address: " + broadcastAddress;
+      document.getElementById('numberOfHosts').innerText = "Number of Hosts: " + numberOfHosts;
+        document.getElementById('networkCalculation').innerText = networkCalculation;
+      document.getElementById('broadcastCalculation').innerText = broadcastCalculation;
+      document.getElementById('hostsCalculation').innerText = hostsCalculation;
+    }
+  </script>
+  </body>
+  </html>
+  
