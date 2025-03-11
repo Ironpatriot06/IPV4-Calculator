@@ -3,59 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPV4</title>
+    <title>IPv4 Calculator</title>
     <style>
-        body{
-            background-color: beige;
-        }
-        .box{
+        
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
             display: flex;
-            width: 600px;
-            height: 400px;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            margin-left:420px;
-            margin-top: 150px;
-        }
-        .card{
-            width: 250px;
-            height: 200px;
-            margin:20px;
-            background-color: orange;
             justify-content: center;
-            text-align: center;
-            align-self: center;
-            border-radius:20px 20px;
-            border:10px solid white;
+            height: 100vh;
         }
 
-        a{
-            text-decoration: none;
-            color:white;
-        }
-        span{
+        
+        .title {
+            font-size: 45px;
+            font-weight: 600;
+            color: #ff8c00;
             text-align: center;
-            position: relative;
-            top:80px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
         }
-        .df{
-            font-size:40px;
-            color:orange;
-            text-align:center;
+
+        
+        .box {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        
+        .card {
+            width: 260px;
+            height: 220px;
+            background: linear-gradient(135deg, #ff8c00, #ff6a00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 15px;
+            border: 5px solid white;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        
+        a {
+            text-decoration: none;
+            color: white;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 35px;
+            }
+
+            .box {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+                height: 180px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="df">
-        <span>
-            IPV4-Calculator
-        </span>
-    </div>
+
+    <div class="title">IPv4 Calculator</div>
+
     <div class="box">
-        <a href="subnet.html"><div class="card"><span>SUBNETTING</span></div></a>
-        <a href="supernet.html"><div class="card"><span>SUPERNETTING</span></div></a>
+        <a href="subnet.html"><div class="card">SUBNETTING</div></a>
+        <a href="supernet.html"><div class="card">SUPERNETTING</div></a>
     </div>
-</main>
-    
+
 </body>
 </html>
